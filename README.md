@@ -1,5 +1,7 @@
 # ViSense API tools
 
+![Build Status](https://travis-ci.org/vinotion/visense-tools.svg?branch=master "Travis CI Build Status")
+
 ## Introduction
 
 This set of tools can be used to facilitate the integration configuration/data API of a
