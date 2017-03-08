@@ -18,7 +18,7 @@ This software is licensed under the MIT license.
 
 ## ToDo
 
-* Add example code for each class.
+* Add example code for each utility class.
 * Add unit tests for the check-utils.
 * Add support for RFC-1123 host names in socket addresses.
 * Improve error handling and propagation.
