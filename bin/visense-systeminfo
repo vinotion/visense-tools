@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const version = require('../package.json').version;
+
+var program        = require('commander'),
+    Authentication = require('../lib/authentication'),
+    ViSenseSystem  = require('../lib/visense-system');
+
+
+// Define command-line arguments
+program
+  .version(version)
+  .option('--ip <ip>', 'IP-address')
+  .option('--port <port>', 'Port number', '80')
+  .option('--username <username>', 'Username')
+  .option('--password <password>', 'Password')
+  .parse(process.argv);
+
+
+// Check command-line arguments
+function checkCommandLineArguments(program)
+{
+  if (  (typeof program.ip === 'undefined')
+     || (typeof program.port === 'undefined')
+     || (typeof program.username === 'undefined')
+     || (typeof program.password === 'undefined'))
+  {
+    throw new Error('Missing command-line arguments.');
+  }
+}
+
+
+// Script entry point
+try
+{
+  checkCommandLineArguments(program);
+
+  const socketAddress = { ip: program.ip, port: Number(program.port) };
+
+  function handleError(error)
+  {
+    console.error('Error: ' + error);
+    process.exit(1);
+  }
+
+  let authentication = Authentication(socketAddress);
+
+  authentication.signIn({ username: program.username, password: program.password }).then(() =>
+    {
+      let system = ViSenseSystem(socketAddress, authentication.getSessionToken());
+
+      return Promise.all([ system.queryProductName(),
+                           system.queryServiceTag(),
+                           system.queryConnectionStatus() ]).then((results) =>
+               {
+                 console.log('ViSense system information:');
+                 console.log('---------------------------');
+                 console.log('ID                : ' + system.getId());
+                 console.log('Product name      : ' + results[0]);
+                 console.log('Service tag       : ' + results[1]);
+                 console.log('Connection status : ' + results[2]);
+               }, handleError).then(authentication.signOut);
+    }, handleError).catch(handleError);
+}
+catch (error)
+{
+  console.error(error);
+  process.exit(1);
+}

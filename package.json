@@ -1,0 +1,31 @@
+{
+  "name": "visense-tools",
+  "version": "1.0.0",
+  "description": "ViSense API tools",
+  "author": "ViSense <github-support@vinotion.nl>",
+  "homepage": "http://www.vinotion.nl",
+  "keywords": [
+    "visense",
+    "crowddynamics"
+  ],
+  "author": "ViNotion B.V.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vinotion/visense-tools.git"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "commander": "~2.8.x",
+    "validator": "~5.5.x",
+    "xmlhttprequest": "~1.8.x",
+    "promise": "~7.x"
+  },
+  "bin": {
+    "visense-authentication": "./bin/visense-authentication",
+    "visense-systeminfo": "./bin/visense-systeminfo"
+  },
+  "scripts": {
+    "test": "qunit -c ./index.js -t ./tests/all-tests.js"
+  }
+}
