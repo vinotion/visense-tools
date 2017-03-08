@@ -19,7 +19,8 @@
     "commander": "~2.8.x",
     "validator": "~5.5.x",
     "xmlhttprequest": "~1.8.x",
-    "promise": "~7.x"
+    "promise": "~7.x",
+    "ws": "~2.2.x"
   },
   "bin": {
     "visense-authentication": "./bin/visense-authentication",
