@@ -1,7 +1,7 @@
 # ViSense API tools
 
-![Build Status](https://travis-ci.org/vinotion/visense-tools.svg?branch=master "Travis CI Build Status")
-![Documentation](https://inch-ci.org/github/vinotion/visense-tools?branch=master "Inch CI Documentation")
+[![Build Status](https://travis-ci.org/vinotion/visense-tools.svg?branch=master "Travis CI Build Status")](https://travis-ci.org/vinotion/visense-tools)
+[![Documentation](https://inch-ci.org/github/vinotion/visense-tools.svg?branch=master "Inch CI Documentation")]((https://inch-ci.org/github/vinotion/visense-tools)
 
 ## Introduction
 
