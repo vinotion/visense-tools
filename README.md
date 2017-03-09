@@ -13,11 +13,74 @@ This set of tools can be used to facilitate the integration configuration/data A
 * Configuration API ajax call adapter,
 * Convenience class for retrieving basic system information.
 
-A set of command-line tools in the `bin/` directory makes use of ViSense tools easy.
-
 ### License
 
 This software is licensed under the MIT license.
+
+## Command-line utilities
+
+A set of command-line tools in the `bin/` directory makes use of ViSense tools easy.
+
+### visense-authentication
+
+Use `visense-authentication` to acquire/free a session token.
+
+```
+  Usage: visense-authentication [options]
+
+  Options:
+
+    -h, --help                     output usage information
+    -V, --version                  output the version number
+    --ip <ip>                      IP-address
+    --port <port>                  Port number (default: 80)
+    --command <signIn|signOut>     Authentication command to be executed.
+    --username <username>          Username (mandatory for command signIn)
+    --password <password>          Password (mandatory for command signIn)
+    --sessionToken <sessionToken>  Session token (mandatory for command signOut)
+```
+
+For example:
+
+```
+ $ visense-authentication --ip '192.168.0.100' --command 'signIn' --username 'admin' --password 'MyPassword'
+
+ 5e23e335-3689-47e8-9b58-f547bc8e84b0
+```
+
+```
+ $ visense-authentication --ip '192.168.0.100' --command 'signOut' --clientToken '5e23e335-3689-47e8-9b58-f547bc8e84b0'
+```
+
+### visense-systeminfo
+
+Use `visense-systeminfo` to list some basic information of a ViSense system.
+
+```
+  Usage: visense-systeminfo [options]
+
+  Options:
+
+    -h, --help             output usage information
+    -V, --version          output the version number
+    --ip <ip>              IP-address
+    --port <port>          Port number (default: 80)
+    --username <username>  Username
+    --password <password>  Password
+```
+
+For example:
+
+```
+ $ visense-systeminfo --ip '192.168.0.100' --username 'admin' --password 'MyPassword'
+
+ ViSense system information:
+ ---------------------------
+ ID                : 192.168.0.100
+ Product name      : ViSense CrowdDynamics
+ Service tag       : D34DB33F
+ Connection status : Video connection established.
+```
 
 ## ToDo
 
