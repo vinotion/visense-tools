@@ -1,6 +1,7 @@
 'use strict';
 
-let Authentication = require('../lib/authentication');
+let Authentication = require('../lib/authentication'),
+    expect         = require('expect');
 
 
 // --------------------------------------------------------------------------------------
