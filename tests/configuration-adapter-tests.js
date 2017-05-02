@@ -6,67 +6,67 @@ let ConfigurationAdapter = require('../lib/configuration-adapter');
 // --------------------------------------------------------------------------------------
 QUnit.module('ConfigurationAdapter static tests');
 
-test('Factory function', () =>
+test('Factory function', (assert) =>
   {
     // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    expect(12);
+    assert.expect(12);
 
-    throws(() =>
+    assert.throws(() =>
       {
         ConfigurationAdapter();
       }, 'No parameters');
 
-    throws(() =>
+    assert.throws(() =>
       {
         ConfigurationAdapter(1, 'dummy');
       }, 'Invalid parameters (1; invalid socketAddress object (1))');
 
-    throws(() =>
+    assert.throws(() =>
       {
         ConfigurationAdapter({}, 'dummy');
       }, 'Invalid parameters (2; invalid socketAddress object (2))');
 
-    throws(() =>
+    assert.throws(() =>
       {
         ConfigurationAdapter({ ip: '127.0.0.1' }, 'dummy');
       }, 'Invalid parameters (3; missing port number in socketAddress)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         ConfigurationAdapter({ port: 80 }, 'dummy');
       }, 'Invalid parameters (4; missing IP-address in socketAddress)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         ConfigurationAdapter({ ip: '', port: 80 }, 'dummy');
       }, 'Invalid parameters (5; invalid IP-address in socketAddress)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         ConfigurationAdapter({ ip: '127.0.0.1', port: '' }, 'dummy');
       }, 'Invalid parameters (6; invalid port number type in socketAddress)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         ConfigurationAdapter({ ip: '127.0.0.1', port: 3141565 }, 'dummy');
       }, 'Invalid parameters (7; invalid port number in socketAddress)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         ConfigurationAdapter({ ip: '127.0.0.1', port: 80 });
       }, 'Invalid parameters (8; missing session token parameter)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 1);
       }, 'Invalid parameters (9; invalid session token parameter type)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, '');
       }, 'Invalid parameters (10; empty session token parameter type)');
 
-    ok((() =>
+    assert.ok((() =>
       {
         let x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
         return (typeof x === 'object');
@@ -74,12 +74,12 @@ test('Factory function', () =>
   });
 
 
-test('queryParameter function', () =>
+test('queryParameter function', (assert) =>
   {
     // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    expect(1);
+    assert.expect(1);
 
-    ok((() =>
+    assert.ok((() =>
       {
         const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
 
@@ -89,12 +89,12 @@ test('queryParameter function', () =>
   });
 
 
-test('querySignal function', () =>
+test('querySignal function', (assert) =>
   {
     // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    expect(1);
+    assert.expect(1);
 
-    ok((() =>
+    assert.ok((() =>
       {
         const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
 

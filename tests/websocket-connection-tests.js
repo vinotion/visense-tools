@@ -6,72 +6,72 @@ let WebSocketConnection = require('../lib/websocket-connection');
 // --------------------------------------------------------------------------------------
 QUnit.module('WebSocketConnection static tests');
 
-test('Factory function', () =>
+test('Factory function', (assert) =>
   {
     // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    expect(13);
+    assert.expect(13);
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection();
       }, 'No parameters');
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection(1, 'dummy', 'dummy');
       }, 'Invalid parameters (1; invalid socketAddress object (1))');
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection({}, 'dummy', 'dummy');
       }, 'Invalid parameters (2; invalid socketAddress object (2))');
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection({ ip: '127.0.0.1' }, 'dummy', 'dummy');
       }, 'Invalid parameters (3; missing port number in socketAddress)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection({ port: 80 }, 'dummy', 'dummy');
       }, 'Invalid parameters (4; missing IP-address in socketAddress)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection({ ip: '', port: 80 }, 'dummy', 'dummy');
       }, 'Invalid parameters (5; invalid IP-address in socketAddress)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection({ ip: '127.0.0.1', port: '' }, 'dummy', 'dummy');
       }, 'Invalid parameters (6; invalid port number type in socketAddress)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection({ ip: '127.0.0.1', port: 3141565 }, 'dummy', 'dummy');
       }, 'Invalid parameters (7; invalid port number in socketAddress)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection({ ip: '127.0.0.1', port: 80 }, '', 'dummy');
       }, 'Invalid parameters (8; empty URL parameter)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection({ ip: '127.0.0.1', port: 80 }, 'dummy');
       }, 'Invalid parameters (9; missing session token parameter)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection({ ip: '127.0.0.1', port: 80 }, 'dummy', 1);
       }, 'Invalid parameters (10; invalid session token parameter type)');
 
-    throws(() =>
+    assert.throws(() =>
       {
         WebSocketConnection({ ip: '127.0.0.1', port: 80 }, 'dummy', '');
       }, 'Invalid parameters (11; empty session token parameter type)');
 
-    ok((() =>
+    assert.ok((() =>
       {
         let x = WebSocketConnection({ ip: '127.0.0.1', port: 80 }, 'dummy', 'dummy');
         return (typeof x === 'object');
@@ -79,12 +79,12 @@ test('Factory function', () =>
   });
 
 
-test('open function', () =>
+test('open function', (assert) =>
   {
     // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    expect(1);
+    assert.expect(1);
 
-    ok((() =>
+    assert.ok((() =>
       {
         const x = WebSocketConnection({ ip: '127.0.0.1', port: 80 }, 'dummy', 'dummy');
 
@@ -94,12 +94,12 @@ test('open function', () =>
   });
 
 
-test('send function', () =>
+test('send function', (assert) =>
   {
     // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    expect(1);
+    assert.expect(1);
 
-    throws(() =>
+    assert.throws(() =>
       {
         const x = WebSocketConnection({ ip: '127.0.0.1', port: 80 }, 'dummy', 'dummy');
         x.send('', null);
@@ -107,12 +107,12 @@ test('send function', () =>
   });
 
 
-test('close function', () =>
+test('close function', (assert) =>
   {
     // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    expect(1);
+    assert.expect(1);
 
-    ok((() =>
+    assert.ok((() =>
       {
         const x = WebSocketConnection({ ip: '127.0.0.1', port: 80 }, 'dummy', 'dummy');
 
