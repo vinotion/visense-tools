@@ -2,14 +2,13 @@
   "name": "visense-tools",
   "version": "1.0.5",
   "description": "ViSense API tools",
-  "author": "ViNotion <github@vinotion.nl>",
+  "author": "ViNotion B.V. <github@vinotion.nl>",
   "homepage": "http://www.vinotion.nl",
   "keywords": [
     "vinotion",
     "visense",
     "crowddynamics"
   ],
-  "author": "ViNotion B.V.",
   "license": "MIT",
   "repository": {
     "type": "git",
