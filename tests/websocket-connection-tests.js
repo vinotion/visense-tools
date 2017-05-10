@@ -114,11 +114,11 @@ test('close function', (assert) =>
     // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
     assert.expect(1);
 
-    assert.ok((() =>
+    assert.throws(() =>
       {
         const x = WebSocketConnection({ ip: '127.0.0.1', port: 80 }, 'dummy', 'dummy');
 
-        // Check if the returned value is a Promise (the call will not fail)
-        return (typeof x.close().then === 'function');
-      })(), 'Valid function call');
+        // Websocket is not open, method will throw.
+        x.close()
+      }, 'Close when the WebSocketConnection is not opened yet');
   });
