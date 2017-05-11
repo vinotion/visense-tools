@@ -18,15 +18,15 @@
   "dependencies": {
     "commander": "~2.8.x",
     "validator": "~5.5.x",
-    "xmlhttprequest": "~1.8.x",
-    "promise": "~7.x",
-    "ws": "~2.2.x"
+    "ws": "~2.2.x",
+    "request": "~2.81.x",
+    "request-promise-native": "~1.0.x"
   },
   "bin": {
     "visense-authentication": "./bin/visense-authentication",
     "visense-systeminfo": "./bin/visense-systeminfo"
   },
   "scripts": {
-    "test": "qunit -c ./index.js -t ./tests/all-tests.js"
+    "test": "node ./tests/all-tests.js"
   }
 }

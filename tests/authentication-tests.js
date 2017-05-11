@@ -95,7 +95,7 @@ test('signIn function', (assert) =>
     assert.ok((() =>
       {
         // Check if the returned value is a Promise (the signIn action will fail)
-        return (typeof x.signIn({ username: 'dsfnjskjn3', password: 'kjfuisqh3' }).then === 'function');
+        return (typeof x.signIn({ username: 'dsfnjskjn3', password: 'kjfuisqh3' }).catch(() => {}) === 'object');
       })(), 'Valid function call');
   });
 
@@ -119,7 +119,7 @@ test('signOut function', (assert) =>
     assert.ok((() =>
       {
         // Check if the returned value is a Promise (the signOut action will fail)
-        return (typeof x.signOut().then === 'function');
+        return (typeof x.signOut().catch(() => {}) === 'object');
       })(), 'Valid function call');
   });
 
@@ -135,7 +135,7 @@ test('verify function', (assert) =>
     assert.ok((() =>
       {
         // Check if the returned value is a Promise (the verify action will fail)
-        return (typeof x.verify().then === 'function');
+        return (typeof x.verify().catch(() => {}) === 'object');
       })(), 'Valid function call');
   });
 
