@@ -89,7 +89,7 @@ test('open function', (assert) =>
         const x = WebSocketConnection({ ip: '127.0.0.1', port: 80 }, 'dummy', 'dummy');
 
         // Check if the returned value is a Promise (the call will fail)
-        return (typeof x.open().catch(error => {}) === 'object');
+        return (typeof x.open().catch(() => {}) === 'object');
       })(), 'Valid function call');
   });
 
@@ -120,5 +120,5 @@ test('close function', (assert) =>
 
         // Websocket is not open, method will throw.
         x.close()
-      }, 'Close when the WebSocketConnection is not opened yet');
+      }, 'Close when the WebSocket connection is not opened yet');
   });

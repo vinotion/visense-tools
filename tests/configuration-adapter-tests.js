@@ -84,7 +84,7 @@ test('queryParameter function', (assert) =>
         const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
 
         // Check if the returned value is a Promise (the query will fail)
-        return (typeof x.queryParameter('').catch(error => {}) === 'object');
+        return (typeof x.queryParameter('').catch(() => {}) === 'object');
       })(), 'Valid function call');
   });
 
@@ -99,6 +99,6 @@ test('querySignal function', (assert) =>
         const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
 
         // Check if the returned value is a Promise (the query will fail)
-        return (typeof x.querySignal('').catch(error => {}) === 'object');
+        return (typeof x.querySignal('').catch(() => {}) === 'object');
       })(), 'Valid function call');
   });

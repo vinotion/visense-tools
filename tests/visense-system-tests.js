@@ -119,7 +119,7 @@ test('queryProductName function', (assert) =>
         const x = ViSenseSystem({ ip: '127.0.0.1', port: 80 }, 'dummy');
 
         // Check if the returned value is a Promise (the query will fail)
-        return (typeof x.queryProductName().catch(error => {}) === 'object');
+        return (typeof x.queryProductName().catch(() => {}) === 'object');
       })(), 'Valid function call');
   });
 
@@ -134,7 +134,7 @@ test('queryServiceTag function', (assert) =>
         const x = ViSenseSystem({ ip: '127.0.0.1', port: 80 }, 'dummy');
 
         // Check if the returned value is a Promise (the query will fail)
-        return (typeof x.queryServiceTag().catch(error => {}) === 'object');
+        return (typeof x.queryServiceTag().catch(() => {}) === 'object');
       })(), 'Valid function call');
   });
 
@@ -149,6 +149,6 @@ test('queryConnectionStatus function', (assert) =>
         const x = ViSenseSystem({ ip: '127.0.0.1', port: 80 }, 'dummy');
 
         // Check if the returned value is a Promise (the query will fail)
-        return (typeof x.queryConnectionStatus().catch(error => {}) === 'object');
+        return (typeof x.queryConnectionStatus().catch(() => {}) === 'object');
       })(), 'Valid function call');
   });

@@ -19,8 +19,8 @@
     "commander": "~2.8.x",
     "validator": "~5.5.x",
     "ws": "~2.2.x",
-    "request": "~2.81.0",
-    "request-promise-native": "~1.0.4"
+    "request": "~2.81.x",
+    "request-promise-native": "~1.0.x"
   },
   "bin": {
     "visense-authentication": "./bin/visense-authentication",
