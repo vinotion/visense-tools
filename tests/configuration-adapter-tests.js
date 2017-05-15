@@ -102,3 +102,33 @@ test('setParameter function', (assert) =>
         return (typeof x.setParameter('', '').catch(() => {}) === 'object');
       })(), 'Valid function call');
   });
+
+
+test('getSignal function', (assert) =>
+  {
+    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
+    assert.expect(1);
+
+    assert.ok((() =>
+      {
+        const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
+
+        // Check if the returned value is a Promise (the query will fail)
+        return (typeof x.getSignal('').catch(() => {}) === 'object');
+      })(), 'Valid function call');
+  });
+
+
+test('setSignal function', (assert) =>
+  {
+    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
+    assert.expect(1);
+
+    assert.ok((() =>
+      {
+        const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
+
+        // Check if the returned value is a Promise (the query will fail)
+        return (typeof x.setSignal('', '').catch(() => {}) === 'object');
+      })(), 'Valid function call');
+  });
