@@ -1,6 +1,6 @@
 'use strict';
 
-let testrunner = require('qunit');
+const testrunner = require('node-qunit');
 
 testrunner.run(
   [
