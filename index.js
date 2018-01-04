@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports.Authentication       = require('./lib/authentication');
-module.exports.WebSocketConnection  = require('./lib/websocket-connection');
+module.exports.CheckUtils           = require('./lib/check-utils');
 module.exports.ConfigurationAdapter = require('./lib/configuration-adapter');
 module.exports.ViSenseSystem        = require('./lib/visense-system');
+module.exports.WebSocketConnection  = require('./lib/websocket-connection');
