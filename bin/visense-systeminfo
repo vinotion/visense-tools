@@ -51,9 +51,9 @@ try
     {
       let system = ViSenseSystem(socketAddress, authentication.getSessionToken());
 
-      return Promise.all([ system.queryProductName(),
-                           system.queryServiceTag(),
-                           system.queryConnectionStatus() ]).then((results) =>
+      return Promise.all([ system.getProductName(),
+                           system.getServiceTag(),
+                           system.getConnectionStatus() ]).then((results) =>
         {
           console.log('ViSense system information:');
           console.log('---------------------------');
