@@ -91,3 +91,4 @@ For example:
 * Parsing of JSON formatted errors.
 * Move static socket-addres-related tests from class tests to check-utils tests.
 * Add generic library functions for WebSocket message / data parsing.
+* Change all string-type errors to native 'Error' types.
