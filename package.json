@@ -16,10 +16,10 @@
   },
   "main": "index.js",
   "dependencies": {
-    "commander": "~2.12.x",
-    "validator": "~9.2.x",
-    "ws": "~3.3.x",
-    "request": "~2.83.x",
+    "commander": "~2.18.x",
+    "validator": "~10.8.x",
+    "ws": "~6.1.x",
+    "request": "~2.88.x",
     "request-promise-native": "~1.0.x"
   },
   "bin": {
