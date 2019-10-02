@@ -13,9 +13,9 @@ program
   .version(version)
   .option('--ip <ip>', 'IP-address')
   .option('--port <port>', 'Port number (default: 80)', '80')
-  .option('--command <signIn|signOut>', 'Authentication command to be executed.')
-  .option('--username <username>', 'Username (mandatory for command signIn)')
-  .option('--password <password>', 'Password (mandatory for command signIn)')
+  .option('--command <signIn|signOut|clearUserSessions>', 'Authentication command to be executed.')
+  .option('--username <username>', 'Username (mandatory for command signIn|clearUserSessions)')
+  .option('--password <password>', 'Password (mandatory for command signIn|clearUserSessions)')
   .option('--sessionToken <sessionToken>', 'Session token (mandatory for command signOut)')
   .parse(process.argv);
 
@@ -29,18 +29,19 @@ function checkCommandLineArguments(program)
     throw new Error('Missing command-line argument(s).');
   }
 
-  if (!/^(signIn|signOut)$/.test(program.command))
+  if (!/^(signIn|signOut|clearUserSessions)$/.test(program.command))
   {
     program.outputHelp();
     throw new Error('Invalid command provided.');
   }
 
-  if (  (program.command === 'signIn')
+  if (  (  (program.command === 'signIn')
+	|| (program.command === 'clearUserSessions'))
      && (  (typeof program.username === 'undefined')
         || (typeof program.password === 'undefined')))
   {
     program.outputHelp();
-    throw new Error('Command-line arguments \'username\' and \'password\' mandatory for command signIn.');
+    throw new Error('Command-line arguments \'username\' and \'password\' mandatory for command signIn or clearUserSessions.');
   }
 
   if (  (program.command === 'signOut')
@@ -73,6 +74,16 @@ try
     authentication.signIn({ username: program.username, password: program.password }).then(() =>
       {
         console.log(authentication.getSessionToken());
+      }, (error) =>
+      {
+        handleError(error);
+      });
+    break;
+
+  case 'clearUserSessions':
+    authentication.clearUserSessions({ username: program.username, password: program.password }).then((message) =>
+      {
+        console.log(message);
       }, (error) =>
       {
         handleError(error);
