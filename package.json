@@ -17,6 +17,7 @@
   "main": "index.js",
   "dependencies": {
     "commander": "~3.0.x",
+    "node-qunit": "~1.0",
     "request": "~2.88.x",
     "request-promise-native": "~1.0.x",
     "validator": "~11.1.x",
