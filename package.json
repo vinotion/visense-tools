@@ -16,11 +16,11 @@
   },
   "main": "index.js",
   "dependencies": {
-    "commander": "~2.18.x",
-    "validator": "~10.8.x",
-    "ws": "~6.1.x",
+    "commander": "~3.0.x",
     "request": "~2.88.x",
-    "request-promise-native": "~1.0.x"
+    "request-promise-native": "~1.0.x",
+    "validator": "~11.1.x",
+    "ws": "~7.1.x"
   },
   "bin": {
     "visense-authentication": "./bin/visense-authentication",
