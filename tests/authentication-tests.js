@@ -140,6 +140,23 @@ test('verify function', (assert) =>
   });
 
 
+test('clearUserSessions function', (assert) =>
+  {
+    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
+    assert.expect(1);
+
+    // Test fixtures
+    const x = Authentication({ ip: '127.0.0.1', port: 80 });
+    const credentials = { username: 'admin', password: '' };
+
+    assert.ok((() =>
+      {
+        // Check if the returned value is a Promise (the verify action will fail)
+        return (typeof x.clearUserSessions(credentials).catch(() => {}) === 'object');
+      })(), 'Valid function call');
+  });
+
+
 test('{get,set}SessionToken functions', (assert) =>
   {
     // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
