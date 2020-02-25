@@ -16,12 +16,12 @@
   },
   "main": "index.js",
   "dependencies": {
-    "commander": "~3.0.x",
-    "node-qunit": "~1.0",
+    "commander": "~4.1.x",
+    "validator": "~12.2.x",
+    "ws": "~7.2.x",
     "request": "~2.88.x",
     "request-promise-native": "~1.0.x",
-    "validator": "~11.1.x",
-    "ws": "~7.1.x"
+    "node-qunit": "~1.x"
   },
   "bin": {
     "visense-authentication": "./bin/visense-authentication",
