@@ -1,180 +1,156 @@
 'use strict';
 
-let Authentication = require('../lib/authentication');
+const Authentication = require('../lib/authentication');
 
 
 // --------------------------------------------------------------------------------------
-QUnit.module('Authentication static tests');
+QUnit.module('Authentication unit tests');
 
-test('Factory function', (assert) =>
-  {
-    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    assert.expect(9);
+test('Factory function', (assert) => {
 
-    assert.throws(() =>
-      {
-        Authentication();
-      }, 'No parameters');
+  // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
+  assert.expect(12);
 
-    assert.throws(() =>
-      {
-        Authentication(1);
-      }, 'Invalid parameters (1; invalid socketAddress object (1))');
+  assert.throws(() => {
+    Authentication();
+  }, 'No parameters');
 
-    assert.throws(() =>
-      {
-        Authentication({});
-      }, 'Invalid parameters (2; invalid socketAddress object (2))');
+  assert.throws(() => {
+    Authentication(1, true);
+  }, 'Invalid parameters (1; invalid socketAddress object (1))');
 
-    assert.throws(() =>
-      {
-        Authentication({ ip: '127.0.0.1' });
-      }, 'Invalid parameters (3; missing port number in socketAddress)');
+  assert.throws(() => {
+    Authentication({}, true);
+  }, 'Invalid parameters (2; invalid socketAddress object (2))');
 
-    assert.throws(() =>
-      {
-        Authentication({ port: 80 });
-      }, 'Invalid parameters (4; missing IP-address in socketAddress)');
+  assert.throws(() => {
+    Authentication({ ip: '127.0.0.1' }, true);
+  }, 'Invalid parameters (3; missing port number in socketAddress)');
 
-    assert.throws(() =>
-      {
-        Authentication({ ip: '', port: 80 });
-      }, 'Invalid parameters (5; invalid IP-address in socketAddress)');
+  assert.throws(() => {
+    Authentication({ port: 80 }, true);
+  }, 'Invalid parameters (4; missing IP-address in socketAddress)');
 
-    assert.throws(() =>
-      {
-        Authentication({ ip: '127.0.0.1', port: '' });
-      }, 'Invalid parameters (6; invalid port number type in socketAddress)');
+  assert.throws(() => {
+    Authentication({ ip: '', port: 80 }, true);
+  }, 'Invalid parameters (5; invalid IP-address in socketAddress)');
 
-    assert.throws(() =>
-      {
-        Authentication({ ip: '127.0.0.1', port: 3141565 });
-      }, 'Invalid parameters (7; invalid port number in socketAddress)');
+  assert.throws(() => {
+    Authentication({ ip: '127.0.0.1', port: '' }, true);
+  }, 'Invalid parameters (6; invalid port number type in socketAddress)');
 
-    assert.ok((() =>
-      {
-        let x = Authentication({ ip: '127.0.0.1', port: 80 });
-        return (typeof x === 'object');
-      })(), 'Valid function call');
-  });
+  assert.throws(() => {
+    Authentication({ ip: '127.0.0.1', port: 3141565 }, true);
+  }, 'Invalid parameters (7; invalid port number in socketAddress)');
 
+  assert.throws(() => {
+    Authentication({ ip: '127.0.0.1', port: 80 });
+  }, 'Invalid parameters (8; missing useSsl parameter)');
 
-test('signIn function', (assert) =>
-  {
-    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    assert.expect(6);
+  assert.throws(() => {
+    Authentication({ ip: '127.0.0.1', port: 80 }, 'nonsense');
+  }, 'Invalid parameters (9; invalid useSsl parameter)');
 
-    // Test fixture
-    const x = Authentication({ ip: '127.0.0.1', port: 80 });
+  assert.ok((() => {
+    const x = Authentication({ ip: '127.0.0.1', port: 80 }, true);
+    return (typeof x === 'object');
+  })(), 'Valid function call (SSL enabled)');
 
-    assert.throws(() =>
-      {
-        x.signIn();
-      }, 'No parameters');
-
-    assert.throws(() =>
-      {
-        x.signIn(1);
-      }, 'Invalid parameters (1; invalid credentials object (1))');
-
-    assert.throws(() =>
-      {
-        x.signIn({});
-      }, 'Invalid parameters (2; invalid credentials object (2))');
-
-    assert.throws(() =>
-      {
-        x.signIn({ username: 'admin' });
-      }, 'Invalid parameters (3; missing password in credentials)');
-
-    assert.throws(() =>
-      {
-        x.signIn({ password: '' });
-      }, 'Invalid parameters (4; missing username in credentials)');
-
-    assert.ok((() =>
-      {
-        // Check if the returned value is a Promise (the signIn action will fail)
-        return (typeof x.signIn({ username: 'dsfnjskjn3', password: 'kjfuisqh3' }).catch(() => {}) === 'object');
-      })(), 'Valid function call');
-  });
+  assert.ok((() => {
+    const x = Authentication({ ip: '127.0.0.1', port: 80 }, false);
+    return (typeof x === 'object');
+  })(), 'Valid function call (SSL disabled)');
+});
 
 
-test('signOut function', (assert) =>
-  {
-    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    assert.expect(2);
+test('signIn function', (assert) => {
 
-    // Test fixture
-    const x = Authentication({ ip: '127.0.0.1', port: 80 });
+  // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
+  assert.expect(6);
 
-    assert.throws(() =>
-      {
-        x.signOut();
-      }, 'No previous session token acquired');
+  // Test fixture.
+  const x = Authentication({ ip: '127.0.0.1', port: 80 }, true);
 
-    // Set fake session token
-    x.setSessionToken('snafu');
+  assert.throws(() => {
+    x.signIn();
+  }, 'No parameters');
 
-    assert.ok((() =>
-      {
-        // Check if the returned value is a Promise (the signOut action will fail)
-        return (typeof x.signOut().catch(() => {}) === 'object');
-      })(), 'Valid function call');
-  });
+  assert.throws(() => {
+    x.signIn(1);
+  }, 'Invalid parameters (1; invalid credentials object (1))');
 
+  assert.throws(() => {
+    x.signIn({});
+  }, 'Invalid parameters (2; invalid credentials object (2))');
 
-test('verify function', (assert) =>
-  {
-    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    assert.expect(1);
+  assert.throws(() => {
+    x.signIn({ username: 'admin' });
+  }, 'Invalid parameters (3; missing password in credentials)');
 
-    // Test fixture
-    const x = Authentication({ ip: '127.0.0.1', port: 80 });
+  assert.throws(() => {
+    x.signIn({ password: '' });
+  }, 'Invalid parameters (4; missing username in credentials)');
 
-    assert.ok((() =>
-      {
-        // Check if the returned value is a Promise (the verify action will fail)
-        return (typeof x.verify().catch(() => {}) === 'object');
-      })(), 'Valid function call');
-  });
+  assert.ok((() => {
+    // Check if the returned value is a Promise (the signIn action will fail).
+    return (typeof x.signIn({ username: 'dsfnjskjn3', password: 'kjfuisqh3' }).catch(() => {}) === 'object');
+  })(), 'Valid function call');
+});
 
 
-test('clearUserSessions function', (assert) =>
-  {
-    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    assert.expect(1);
+test('signOut function', (assert) => {
 
-    // Test fixtures
-    const x = Authentication({ ip: '127.0.0.1', port: 80 });
-    const credentials = { username: 'admin', password: '' };
+  // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
+  assert.expect(2);
 
-    assert.ok((() =>
-      {
-        // Check if the returned value is a Promise (the verify action will fail)
-        return (typeof x.clearUserSessions(credentials).catch(() => {}) === 'object');
-      })(), 'Valid function call');
-  });
+  // Test fixture.
+  const x = Authentication({ ip: '127.0.0.1', port: 80 }, true);
+
+  assert.throws(() => {
+    x.signOut();
+  }, 'No previous session token acquired');
+
+  // Set fake session token.
+  x.setSessionToken('nonsense');
+
+  assert.ok((() => {
+    // Check if the returned value is a Promise (the signOut action will fail).
+    return (typeof x.signOut().catch(() => {}) === 'object');
+  })(), 'Valid function call');
+});
 
 
-test('{get,set}SessionToken functions', (assert) =>
-  {
-    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    assert.expect(2);
+test('verify function', (assert) => {
 
-    // Test fixture
-    const x = Authentication({ ip: '127.0.0.1', port: 80 });
+  // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
+  assert.expect(1);
 
-    assert.ok((() =>
-      {
-        return (x.getSessionToken() === '');
-      })(), 'Session token empty if not signed in');
+  // Test fixture.
+  const x = Authentication({ ip: '127.0.0.1', port: 80 }, true);
 
-    // Set fake session token
-    x.setSessionToken('snafu');
+  assert.ok((() => {
+      // Check if the returned value is a Promise (the verify action will fail).
+      return (typeof x.verify().catch(() => {}) === 'object');
+    })(), 'Valid function call');
+});
 
-    assert.ok((() =>
-      {
-        return (x.getSessionToken() === 'snafu');
-      })(), 'Session token set properly');
-  });
+
+test('{get,set}SessionToken functions', (assert) => {
+
+  // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
+  assert.expect(2);
+
+  // Test fixture.
+  const x = Authentication({ ip: '127.0.0.1', port: 80 }, true);
+
+  assert.ok((() => {
+    return (x.getSessionToken() === '');
+  })(), 'Session token empty if not signed in');
+
+  // Set fake session token.
+  x.setSessionToken('nonsense');
+
+  assert.ok((() => {
+    return (x.getSessionToken() === 'nonsense');
+  })(), 'Session token set properly');
+});

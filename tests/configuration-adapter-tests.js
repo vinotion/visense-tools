@@ -1,134 +1,127 @@
 'use strict';
 
-let ConfigurationAdapter = require('../lib/configuration-adapter');
+const ConfigurationAdapter = require('../lib/configuration-adapter');
 
 
 // --------------------------------------------------------------------------------------
-QUnit.module('ConfigurationAdapter static tests');
+QUnit.module('ConfigurationAdapter unit tests');
 
-test('Factory function', (assert) =>
-  {
-    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    assert.expect(12);
+test('Factory function', (assert) => {
 
-    assert.throws(() =>
-      {
-        ConfigurationAdapter();
-      }, 'No parameters');
+  // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
+  assert.expect(14);
 
-    assert.throws(() =>
-      {
-        ConfigurationAdapter(1, 'dummy');
-      }, 'Invalid parameters (1; invalid socketAddress object (1))');
+  assert.throws(() => {
+    ConfigurationAdapter();
+  }, 'No parameters');
 
-    assert.throws(() =>
-      {
-        ConfigurationAdapter({}, 'dummy');
-      }, 'Invalid parameters (2; invalid socketAddress object (2))');
+  assert.throws(() => {
+    ConfigurationAdapter(1, true, 'dummy');
+  }, 'Invalid parameters (1; invalid socketAddress object (1))');
 
-    assert.throws(() =>
-      {
-        ConfigurationAdapter({ ip: '127.0.0.1' }, 'dummy');
-      }, 'Invalid parameters (3; missing port number in socketAddress)');
+  assert.throws(() => {
+    ConfigurationAdapter({}, true, 'dummy');
+  }, 'Invalid parameters (2; invalid socketAddress object (2))');
 
-    assert.throws(() =>
-      {
-        ConfigurationAdapter({ port: 80 }, 'dummy');
-      }, 'Invalid parameters (4; missing IP-address in socketAddress)');
+  assert.throws(() => {
+    ConfigurationAdapter({ ip: '127.0.0.1' }, true, 'dummy');
+  }, 'Invalid parameters (3; missing port number in socketAddress)');
 
-    assert.throws(() =>
-      {
-        ConfigurationAdapter({ ip: '', port: 80 }, 'dummy');
-      }, 'Invalid parameters (5; invalid IP-address in socketAddress)');
+  assert.throws(() => {
+    ConfigurationAdapter({ port: 80 }, true, 'dummy');
+  }, 'Invalid parameters (4; missing IP-address in socketAddress)');
 
-    assert.throws(() =>
-      {
-        ConfigurationAdapter({ ip: '127.0.0.1', port: '' }, 'dummy');
-      }, 'Invalid parameters (6; invalid port number type in socketAddress)');
+  assert.throws(() => {
+    ConfigurationAdapter({ ip: '', port: 80 }, true, 'dummy');
+  }, 'Invalid parameters (5; invalid IP-address in socketAddress)');
 
-    assert.throws(() =>
-      {
-        ConfigurationAdapter({ ip: '127.0.0.1', port: 3141565 }, 'dummy');
-      }, 'Invalid parameters (7; invalid port number in socketAddress)');
+  assert.throws(() => {
+    ConfigurationAdapter({ ip: '127.0.0.1', port: '' }, true, 'dummy');
+  }, 'Invalid parameters (6; invalid port number type in socketAddress)');
 
-    assert.throws(() =>
-      {
-        ConfigurationAdapter({ ip: '127.0.0.1', port: 80 });
-      }, 'Invalid parameters (8; missing session token parameter)');
+  assert.throws(() => {
+    ConfigurationAdapter({ ip: '127.0.0.1', port: 3141565 }, true, 'dummy');
+  }, 'Invalid parameters (7; invalid port number in socketAddress)');
 
-    assert.throws(() =>
-      {
-        ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 1);
-      }, 'Invalid parameters (9; invalid session token parameter type)');
+  assert.throws(() => {
+    ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'nonsense', 'dummy');
+  }, 'Invalid parameters (8; invalid useSsl parameter)');
 
-    assert.throws(() =>
-      {
-        ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, '');
-      }, 'Invalid parameters (10; empty session token parameter type)');
+  assert.throws(() => {
+    ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, true);
+  }, 'Invalid parameters (9; missing session token parameter)');
 
-    assert.ok((() =>
-      {
-        let x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
-        return (typeof x === 'object');
-      })(), 'Valid function call');
-  });
+  assert.throws(() => {
+    ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, true, 1);
+  }, 'Invalid parameters (10; invalid session token parameter type)');
+
+  assert.throws(() => {
+    ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, true, '');
+  }, 'Invalid parameters (11; empty session token parameter type)');
+
+  assert.ok((() => {
+    const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, true, 'dummy');
+    return (typeof x === 'object');
+  })(), 'Valid function call (SSL enabled)');
+
+  assert.ok((() => {
+    const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, false, 'dummy');
+    return (typeof x === 'object');
+  })(), 'Valid function call (SSL disabled)');
+});
 
 
-test('getParameter function', (assert) =>
-  {
-    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    assert.expect(1);
+test('getParameter function', (assert) => {
 
-    assert.ok((() =>
-      {
-        const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
+  // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
+  assert.expect(1);
 
-        // Check if the returned value is a Promise (the query will fail)
-        return (typeof x.getParameter('').catch(() => {}) === 'object');
-      })(), 'Valid function call');
-  });
+  assert.ok((() => {
+    const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, true, 'dummy');
 
-
-test('setParameter function', (assert) =>
-  {
-    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    assert.expect(1);
-
-    assert.ok((() =>
-      {
-        const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
-
-        // Check if the returned value is a Promise (the query will fail)
-        return (typeof x.setParameter('', '').catch(() => {}) === 'object');
-      })(), 'Valid function call');
-  });
+    // Check if the returned value is a Promise (the query will fail).
+    return (typeof x.getParameter('').catch(() => {}) === 'object');
+  })(), 'Valid function call');
+});
 
 
-test('getSignal function', (assert) =>
-  {
-    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    assert.expect(1);
+test('setParameter function', (assert) => {
 
-    assert.ok((() =>
-      {
-        const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
+  // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
+  assert.expect(1);
 
-        // Check if the returned value is a Promise (the query will fail)
-        return (typeof x.getSignal('').catch(() => {}) === 'object');
-      })(), 'Valid function call');
-  });
+  assert.ok((() => {
+    const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, true, 'dummy');
+
+    // Check if the returned value is a Promise (the query will fail).
+    return (typeof x.setParameter('', '').catch(() => {}) === 'object');
+  })(), 'Valid function call');
+});
 
 
-test('setSlot function', (assert) =>
-  {
-    // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails)
-    assert.expect(1);
+test('getSignal function', (assert) => {
 
-    assert.ok((() =>
-      {
-        const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, 'dummy');
+  // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
+  assert.expect(1);
 
-        // Check if the returned value is a Promise (the query will fail)
-        return (typeof x.setSlot('', '').catch(() => {}) === 'object');
-      })(), 'Valid function call');
-  });
+  assert.ok((() => {
+    const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, true, 'dummy');
+
+    // Check if the returned value is a Promise (the query will fail).
+    return (typeof x.getSignal('').catch(() => {}) === 'object');
+  })(), 'Valid function call');
+});
+
+
+test('setSlot function', (assert) => {
+
+  // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
+  assert.expect(1);
+
+  assert.ok((() => {
+    const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, true, 'dummy');
+
+    // Check if the returned value is a Promise (the query will fail).
+    return (typeof x.setSlot('', '').catch(() => {}) === 'object');
+  })(), 'Valid function call');
+});
