@@ -17,6 +17,11 @@ This set of tools can be used to facilitate the integration configuration/data A
 
 This software is licensed under the MIT license.
 
+## Version information
+
+This library runs a major version number identical to the version number of the API it is compatible with.
+I.e. visense-tools v1.x and v2.x are to be used for ViSense v1.x and v2.x devices, respectively.
+
 ## Command-line utilities
 
 A set of command-line tools in the `bin/` directory makes use of ViSense tools easy.
