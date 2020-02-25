@@ -4,57 +4,52 @@
 
 const version = require('../package.json').version;
 
-var program        = require('commander'),
-    Authentication = require('../lib/authentication'),
-    ViSenseSystem  = require('../lib/visense-system');
+const program        = require('commander'),
+      Authentication = require('../lib/authentication'),
+      ViSenseSystem  = require('../lib/visense-system');
 
 
-// Define command-line arguments
+// Define command-line arguments.
 program
   .version(version)
   .option('--ip <ip>', 'IP-address')
   .option('--port <port>', 'Port number (default: 80)', '80')
   .option('--username <username>', 'Username')
   .option('--password <password>', 'Password')
+  .option('--no-ssl', 'Disable usage of SSL; i.e. assume plain HTTP')
   .parse(process.argv);
 
 
-function checkCommandLineArguments(program)
-{
+function checkCommandLineArguments(program) {
   if (  (typeof program.ip === 'undefined')
      || (typeof program.username === 'undefined')
-     || (typeof program.password === 'undefined'))
-  {
+     || (typeof program.password === 'undefined')) {
     program.outputHelp();
     throw new Error('Missing command-line argument(s).');
   }
 }
 
 
-function handleError(error)
-{
+function handleError(error) {
   console.error('Error: ' + error.message);
   process.exit(1);
 }
 
 
-// Script entry point
-try
-{
+// Script entry point.
+try {
   checkCommandLineArguments(program);
 
   const socketAddress = { ip: program.ip, port: Number(program.port) };
 
-  let authentication = Authentication(socketAddress);
+  let authentication = Authentication(socketAddress, program.ssl);
 
-  authentication.signIn({ username: program.username, password: program.password }).then(() =>
-    {
-      let system = ViSenseSystem(socketAddress, authentication.getSessionToken());
+  authentication.signIn({ username: program.username, password: program.password }).then(() => {
+      let system = ViSenseSystem(socketAddress, program.ssl, authentication.getSessionToken());
 
       return Promise.all([ system.getProductName(),
                            system.getServiceTag(),
-                           system.getConnectionStatus() ]).then((results) =>
-        {
+                           system.getConnectionStatus() ]).then((results) => {
           console.log('ViSense system information:');
           console.log('---------------------------');
           console.log('ID                : ' + system.getId());
@@ -63,8 +58,6 @@ try
           console.log('Connection status : ' + results[2]);
         }, handleError).then(authentication.signOut);
     }, handleError).catch(handleError);
-}
-catch (error)
-{
+} catch (error) {
   handleError(error);
 }

@@ -4,102 +4,79 @@
 
 const version = require('../package.json').version;
 
-var program        = require('commander'),
-    Authentication = require('../lib/authentication.js');
+const program        = require('commander'),
+      Authentication = require('../lib/authentication.js');
 
 
-// Define command-line arguments
+// Define command-line arguments.
 program
   .version(version)
   .option('--ip <ip>', 'IP-address')
   .option('--port <port>', 'Port number (default: 80)', '80')
-  .option('--command <signIn|signOut|clearUserSessions>', 'Authentication command to be executed.')
-  .option('--username <username>', 'Username (mandatory for command signIn|clearUserSessions)')
-  .option('--password <password>', 'Password (mandatory for command signIn|clearUserSessions)')
-  .option('--sessionToken <sessionToken>', 'Session token (mandatory for command signOut)')
+  .option('--command <SignIn|SignOut>', 'Authentication command to be executed.')
+  .option('--username <username>', 'Username (mandatory for command SignIn)')
+  .option('--password <password>', 'Password (mandatory for command SignIn)')
+  .option('--sessionToken <sessionToken>', 'Session token (mandatory for command SignOut)')
+  .option('--no-ssl', 'Disable usage of SSL; i.e. assume plain HTTP')
   .parse(process.argv);
 
 
-function checkCommandLineArguments(program)
-{
+function checkCommandLineArguments(program) {
   if (  (typeof program.ip === 'undefined')
-     || (typeof program.command === 'undefined'))
-  {
+     || (typeof program.command === 'undefined')) {
     program.outputHelp();
     throw new Error('Missing command-line argument(s).');
   }
 
-  if (!/^(signIn|signOut|clearUserSessions)$/.test(program.command))
-  {
+  if (!/^(SignIn|SignOut)$/.test(program.command)) {
     program.outputHelp();
     throw new Error('Invalid command provided.');
   }
 
-  if (  (  (program.command === 'signIn')
-	|| (program.command === 'clearUserSessions'))
+  if (  (program.command === 'SignIn')
      && (  (typeof program.username === 'undefined')
-        || (typeof program.password === 'undefined')))
-  {
+        || (typeof program.password === 'undefined'))) {
     program.outputHelp();
-    throw new Error('Command-line arguments \'username\' and \'password\' mandatory for command signIn or clearUserSessions.');
+    throw new Error('Command-line arguments \'username\' and \'password\' mandatory for command SignIn.');
   }
 
-  if (  (program.command === 'signOut')
-     && (typeof program.sessionToken === 'undefined'))
-  {
+  if (  (program.command === 'SignOut')
+     && (typeof program.sessionToken === 'undefined')) {
     program.outputHelp();
-    throw new Error('Command-line argument \'sessionToken\' mandatory for command signOut.');
+    throw new Error('Command-line argument \'sessionToken\' mandatory for command SignOut.');
   }
 }
 
 
-function handleError(error)
-{
+function handleError(error) {
   console.error('Error: ' + error.message);
   process.exit(1);
 }
 
 
-// Script entry point
-try
-{
+// Script entry point.
+try {
   checkCommandLineArguments(program);
 
-  let authentication = Authentication({ ip: program.ip, port: Number(program.port) });
+  let authentication = Authentication({ ip: program.ip, port: Number(program.port) }, program.ssl);
 
   // Process authentication command
-  switch (program.command)
-  {
-  case 'signIn':
-    authentication.signIn({ username: program.username, password: program.password }).then(() =>
-      {
+  switch (program.command) {
+  case 'SignIn':
+    authentication.signIn({ username: program.username, password: program.password }).then(() => {
         console.log(authentication.getSessionToken());
-      }, (error) =>
-      {
+      }, (error) => {
         handleError(error);
       });
     break;
 
-  case 'clearUserSessions':
-    authentication.clearUserSessions({ username: program.username, password: program.password }).then((message) =>
-      {
-        console.log(message);
-      }, (error) =>
-      {
-        handleError(error);
-      });
-    break;
-
-  case 'signOut':
+  case 'SignOut':
     authentication.setSessionToken(program.sessionToken);
-    authentication.signOut().then(null, (error) =>
-      {
+    authentication.signOut().then(null, (error) => {
         handleError(error);
       });
     break;
   }
-}
-catch (error)
-{
+} catch (error) {
   handleError(error);
 }
