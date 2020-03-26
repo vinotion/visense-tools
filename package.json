@@ -15,6 +15,7 @@
     "url": "https://github.com/vinotion/visense-tools.git"
   },
   "main": "index.js",
+  "types": "./types/index.d.ts",
   "dependencies": {
     "commander": "~4.1.x",
     "validator": "~12.2.x",
