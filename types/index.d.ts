@@ -42,7 +42,7 @@ declare module "visense-tools" {
 
 
     class WebSocketConnection {
-        constructor(socketAddress: SocketAddress, useSsl: boolean, url: string, sessionToken: string);
+        constructor(socketAddress: SocketAddress, useSsl: boolean, apiPath: string, sessionToken: string);
 
         open(): Promise<void>;
         close(): Promise<void>;
