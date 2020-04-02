@@ -16,6 +16,9 @@
     "type": "git",
     "url": "https://github.com/vinotion/visense-tools.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "main": "index.js",
   "types": "./types/index.d.ts",
   "dependencies": {
