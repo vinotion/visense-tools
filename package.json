@@ -19,8 +19,8 @@
   "main": "index.js",
   "types": "./types/index.d.ts",
   "dependencies": {
-    "commander": "~4.1.x",
-    "validator": "~12.2.x",
+    "commander": "~5.0.x",
+    "validator": "~13.0.x",
     "ws": "~7.2.x",
     "request": "~2.88.x",
     "request-promise-native": "~1.0.x",
