@@ -24,13 +24,13 @@
     "ws": "~7.3.x",
     "request": "~2.88.x",
     "request-promise-native": "~1.0.x",
-    "node-qunit": "~1.x"
+    "qunit": "~2.11.x"
   },
   "bin": {
     "visense-authentication": "./bin/visense-authentication",
     "visense-systeminfo": "./bin/visense-systeminfo"
   },
   "scripts": {
-    "test": "node ./tests/all-tests.js"
+    "test": "qunit tests/"
   }
 }

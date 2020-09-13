@@ -1,7 +1,7 @@
 'use strict';
 
 const ViSenseSystem = require('../lib/visense-system');
-
+const { test } = QUnit;
 
 // --------------------------------------------------------------------------------------
 QUnit.module('ViSenseSystem static tests');
