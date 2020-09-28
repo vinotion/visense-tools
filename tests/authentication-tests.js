@@ -1,7 +1,7 @@
 'use strict';
 
 const Authentication = require('../lib/authentication');
-
+const { test } = QUnit;
 
 // --------------------------------------------------------------------------------------
 QUnit.module('Authentication unit tests');

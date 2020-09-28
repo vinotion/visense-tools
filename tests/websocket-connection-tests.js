@@ -1,7 +1,7 @@
 'use strict';
 
 const WebSocketConnection = require('../lib/websocket-connection');
-
+const { test } = QUnit;
 
 // --------------------------------------------------------------------------------------
 QUnit.module('WebSocketConnection static tests');
