@@ -1,7 +1,7 @@
 'use strict';
 
 const ConfigurationAdapter = require('../lib/configuration-adapter');
-
+const { test } = QUnit;
 
 // --------------------------------------------------------------------------------------
 QUnit.module('ConfigurationAdapter unit tests');
