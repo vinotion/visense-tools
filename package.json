@@ -19,12 +19,13 @@
   "main": "index.js",
   "types": "./types/index.d.ts",
   "dependencies": {
-    "commander": "~5.1.x",
-    "validator": "~13.1.x",
-    "ws": "~7.3.x",
+    "commander": "~6.1.x",
+    "node-qunit": "~2.x",
+    "npm-check-updates": "^9.0.2",
     "request": "~2.88.x",
     "request-promise-native": "~1.0.x",
-    "node-qunit": "~1.x"
+    "validator": "~13.1.x",
+    "ws": "~7.3.x"
   },
   "bin": {
     "visense-authentication": "./bin/visense-authentication",
