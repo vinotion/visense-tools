@@ -20,7 +20,7 @@
   "types": "./types/index.d.ts",
   "dependencies": {
     "commander": "~7.1.x",
-    "npm-check-updates": "^11.1.9",
+    "npm-check-updates": "^11.3.0",
     "qunit": "~2.14.x",
     "request": "~2.88.x",
     "request-promise-native": "~1.0.x",
