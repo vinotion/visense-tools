@@ -24,7 +24,7 @@
     "qunit": "~2.17.x",
     "request": "~2.88.x",
     "request-promise-native": "~1.0.x",
-    "validator": "~13.6.x",
+    "validator": "~13.7.x",
     "ws": "~8.2.x"
   },
   "bin": {
