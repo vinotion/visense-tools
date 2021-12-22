@@ -20,29 +20,31 @@ program
   .option('--no-ssl', 'Disable usage of SSL; i.e. assume plain HTTP')
   .parse(process.argv);
 
+const options = program.opts();
 
-function checkCommandLineArguments(program) {
-  if (  (typeof program.ip === 'undefined')
-     || (typeof program.command === 'undefined')) {
+
+function checkCommandLineArguments() {
+  if (  (typeof options.ip      === 'undefined')
+     || (typeof options.command === 'undefined')) {
     program.outputHelp();
     throw new Error('Missing command-line argument(s).');
   }
 
-  if (!/^(SignIn|SignOut)$/.test(program.command)) {
-    program.outputHelp();
+  if (!/^(SignIn|SignOut)$/.test(options.command)) {
+    options.outputHelp();
     throw new Error('Invalid command provided.');
   }
 
-  if (  (program.command === 'SignIn')
-     && (  (typeof program.username === 'undefined')
-        || (typeof program.password === 'undefined'))) {
-    program.outputHelp();
+  if (  (options.command === 'SignIn')
+     && (  (typeof options.username === 'undefined')
+        || (typeof options.password === 'undefined'))) {
+    options.outputHelp();
     throw new Error('Command-line arguments \'username\' and \'password\' mandatory for command SignIn.');
   }
 
-  if (  (program.command === 'SignOut')
-     && (typeof program.sessionToken === 'undefined')) {
-    program.outputHelp();
+  if (  (options.command === 'SignOut')
+     && (typeof options.sessionToken === 'undefined')) {
+    options.outputHelp();
     throw new Error('Command-line argument \'sessionToken\' mandatory for command SignOut.');
   }
 }
@@ -56,14 +58,14 @@ function handleError(error) {
 
 // Script entry point.
 try {
-  checkCommandLineArguments(program);
+  checkCommandLineArguments();
 
-  let authentication = Authentication({ ip: program.ip, port: Number(program.port) }, program.ssl);
+  let authentication = Authentication({ ip: options.ip, port: Number(options.port) }, options.ssl);
 
   // Process authentication command
-  switch (program.command) {
+  switch (options.command) {
   case 'SignIn':
-    authentication.signIn({ username: program.username, password: program.password }).then(() => {
+    authentication.signIn({ username: options.username, password: options.password }).then(() => {
         console.log(authentication.getSessionToken());
       }, (error) => {
         handleError(error);
@@ -71,7 +73,7 @@ try {
     break;
 
   case 'SignOut':
-    authentication.setSessionToken(program.sessionToken);
+    authentication.setSessionToken(options.sessionToken);
     authentication.signOut().then(null, (error) => {
         handleError(error);
       });

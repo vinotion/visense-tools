@@ -19,11 +19,13 @@ program
   .option('--no-ssl', 'Disable usage of SSL; i.e. assume plain HTTP')
   .parse(process.argv);
 
+const options = program.opts();
 
-function checkCommandLineArguments(program) {
-  if (  (typeof program.ip === 'undefined')
-     || (typeof program.username === 'undefined')
-     || (typeof program.password === 'undefined')) {
+
+function checkCommandLineArguments() {
+  if (  (typeof options.ip       === 'undefined')
+     || (typeof options.username === 'undefined')
+     || (typeof options.password === 'undefined')) {
     program.outputHelp();
     throw new Error('Missing command-line argument(s).');
   }
@@ -38,14 +40,14 @@ function handleError(error) {
 
 // Script entry point.
 try {
-  checkCommandLineArguments(program);
+  checkCommandLineArguments();
 
-  const socketAddress = { ip: program.ip, port: Number(program.port) };
+  const socketAddress = { ip: options.ip, port: Number(options.port) };
 
-  let authentication = Authentication(socketAddress, program.ssl);
+  let authentication = Authentication(socketAddress, options.ssl);
 
-  authentication.signIn({ username: program.username, password: program.password }).then(() => {
-      let system = ViSenseSystem(socketAddress, program.ssl, authentication.getSessionToken());
+  authentication.signIn({ username: options.username, password: options.password }).then(() => {
+      let system = ViSenseSystem(socketAddress, options.ssl, authentication.getSessionToken());
 
       return Promise.all([ system.getProductName(),
                            system.getServiceTag(),
