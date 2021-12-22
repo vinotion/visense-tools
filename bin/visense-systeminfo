@@ -13,7 +13,7 @@ const program        = require('commander'),
 program
   .version(version)
   .option('--ip <ip>', 'IP-address')
-  .option('--port <port>', 'Port number (default: 80)', '80')
+  .option('--port <port>', 'Port number (default: 443)', '443')
   .option('--username <username>', 'Username')
   .option('--password <password>', 'Password')
   .option('--no-ssl', 'Disable usage of SSL; i.e. assume plain HTTP')
