@@ -11,9 +11,9 @@ const program        = require('commander'),
 // Define command-line arguments.
 program
   .version(version)
-  .option('--ip <ip>', 'IP-address')
+  .requiredOption('--ip <ip>', 'IP-address')
   .option('--port <port>', 'Port number (default: 443)', '443')
-  .option('--command <SignIn|SignOut>', 'Authentication command to be executed.')
+  .requiredOption('--command <SignIn|SignOut>', 'Authentication command to be executed.')
   .option('--username <username>', 'Username (mandatory for command SignIn)')
   .option('--password <password>', 'Password (mandatory for command SignIn)')
   .option('--sessionToken <sessionToken>', 'Session token (mandatory for command SignOut)')
@@ -24,34 +24,28 @@ const options = program.opts();
 
 
 function checkCommandLineArguments() {
-  if (  (typeof options.ip      === 'undefined')
-     || (typeof options.command === 'undefined')) {
-    program.outputHelp();
-    throw new Error('Missing command-line argument(s).');
-  }
-
   if (!/^(SignIn|SignOut)$/.test(options.command)) {
-    options.outputHelp();
+    program.outputHelp({error: true});
     throw new Error('Invalid command provided.');
   }
 
   if (  (options.command === 'SignIn')
      && (  (typeof options.username === 'undefined')
         || (typeof options.password === 'undefined'))) {
-    options.outputHelp();
+    program.outputHelp({error: true});
     throw new Error('Command-line arguments \'username\' and \'password\' mandatory for command SignIn.');
   }
 
   if (  (options.command === 'SignOut')
      && (typeof options.sessionToken === 'undefined')) {
-    options.outputHelp();
+    program.outputHelp({error: true});
     throw new Error('Command-line argument \'sessionToken\' mandatory for command SignOut.');
   }
 }
 
 
 function handleError(error) {
-  console.error('Error: ' + error.message);
+  console.error('\nError: ' + error.message);
   process.exit(1);
 }
 
