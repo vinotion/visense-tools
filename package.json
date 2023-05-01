@@ -1,6 +1,6 @@
 {
   "name": "visense-tools",
-  "version": "2.1.21",
+  "version": "2.1.22",
   "description": "ViSense API tools",
   "author": "ViNotion B.V. <github@vinotion.nl>",
   "homepage": "http://www.vinotion.nl",
@@ -24,7 +24,7 @@
     "request": "~2.88.x",
     "request-promise-native": "~1.0.x",
     "validator": "~13.9.x",
-    "ws": "~8.12.x"
+    "ws": "~8.13.x"
   },
   "bin": {
     "visense-authentication": "./bin/visense-authentication",
