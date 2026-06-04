@@ -9,7 +9,7 @@ QUnit.module('ConfigurationAdapter unit tests');
 test('Factory function', (assert) => {
 
   // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
-  assert.expect(14);
+  assert.expect(16);
 
   assert.throws(() => {
     ConfigurationAdapter();
@@ -68,6 +68,15 @@ test('Factory function', (assert) => {
     const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, false, 'dummy');
     return (typeof x === 'object');
   })(), 'Valid function call (SSL disabled)');
+
+  assert.throws(() => {
+    ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, true, 'dummy', 'nonsense');
+  }, 'Invalid parameters (12; invalid timeout parameter type)');
+
+  assert.ok((() => {
+    const x = ConfigurationAdapter({ ip: '127.0.0.1', port: 80 }, true, 'dummy', 500);
+    return (typeof x === 'object');
+  })(), 'Valid function call (with explicit timeout)');
 });
 
 

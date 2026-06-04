@@ -9,7 +9,7 @@ QUnit.module('ViSenseSystem static tests');
 test('Factory function', (assert) => {
 
   // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
-  assert.expect(16);
+  assert.expect(18);
 
   assert.throws(() => {
     ViSenseSystem();
@@ -78,6 +78,15 @@ test('Factory function', (assert) => {
     let x = ViSenseSystem({ ip: '127.0.0.1', port: 80 }, true, 'dummy', 'dummy');
     return (typeof x === 'object');
   })(), 'Valid function call (4; SSL enabled, non-empty ID)');
+
+  assert.throws(() => {
+    ViSenseSystem({ ip: '127.0.0.1', port: 80 }, true, 'dummy', undefined, 'nonsense');
+  }, 'Invalid parameters (12; invalid timeout parameter type)');
+
+  assert.ok((() => {
+    const x = ViSenseSystem({ ip: '127.0.0.1', port: 80 }, true, 'dummy', undefined, 500);
+    return (typeof x === 'object');
+  })(), 'Valid function call (5; with explicit timeout)');
 });
 
 

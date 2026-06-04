@@ -9,7 +9,7 @@ QUnit.module('Authentication unit tests');
 test('Factory function', (assert) => {
 
   // Tell QUnit to expect a fixed number of assertions (to prevent missing silent fails).
-  assert.expect(12);
+  assert.expect(14);
 
   assert.throws(() => {
     Authentication();
@@ -60,6 +60,15 @@ test('Factory function', (assert) => {
     const x = Authentication({ ip: '127.0.0.1', port: 80 }, false);
     return (typeof x === 'object');
   })(), 'Valid function call (SSL disabled)');
+
+  assert.throws(() => {
+    Authentication({ ip: '127.0.0.1', port: 80 }, true, 'nonsense');
+  }, 'Invalid parameters (10; invalid timeout parameter type)');
+
+  assert.ok((() => {
+    const x = Authentication({ ip: '127.0.0.1', port: 80 }, true, 500);
+    return (typeof x === 'object');
+  })(), 'Valid function call (with explicit timeout)');
 });
 
 
