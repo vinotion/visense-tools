@@ -1,6 +1,6 @@
 {
   "name": "visense-tools",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "ViSense API tools",
   "author": "ViNotion B.V. <github@vinotion.nl>",
   "homepage": "http://www.vinotion.nl",
@@ -16,13 +16,13 @@
   "main": "index.js",
   "types": "./types/index.d.ts",
   "dependencies": {
-    "commander": "~10.x",
-    "got": "^11.8.6",
+    "commander": "~15.x",
+    "got": "^16.2.0",
     "validator": "~13.x",
     "ws": "~8.x"
   },
   "devDependencies": {
-    "qunit": "~2.x"
+    "qunit": "~3.x"
   },
   "bin": {
     "visense-authentication": "./bin/visense-authentication",
