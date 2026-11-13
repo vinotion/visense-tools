@@ -42,6 +42,7 @@ Use `visense-authentication` to acquire/free a session token.
     --username <username>          Username (mandatory for command signIn)
     --password <password>          Password (mandatory for command signIn)
     --sessionToken <sessionToken>  Session token (mandatory for command signOut)
+    --timeout <ms>                 HTTP request timeout in milliseconds (default: 500)
     --no-ssl                       Disable usage of SSL; i.e. assume plain HTTP
 ```
 
@@ -72,6 +73,7 @@ Use `visense-systeminfo` to list some basic information of a ViSense system.
     --port <port>          Port number (default: 80)
     --username <username>  Username
     --password <password>  Password
+    --timeout <ms>         HTTP request timeout in milliseconds (default: 500)
     --no-ssl               Disable usage of SSL; i.e. assume plain HTTP
 ```
 

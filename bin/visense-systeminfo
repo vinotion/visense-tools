@@ -4,7 +4,7 @@
 
 const version = require('../package.json').version;
 
-const program        = require('commander'),
+const program        = require('commander').program,
       Authentication = require('../lib/authentication'),
       ViSenseSystem  = require('../lib/visense-system');
 
@@ -16,6 +16,7 @@ program
   .option('--port <port>', 'Port number (default: 443)', '443')
   .option('--username <username>', 'Username')
   .option('--password <password>', 'Password')
+  .option('--timeout <ms>', 'HTTP request timeout in milliseconds (default: 500)')
   .option('--no-ssl', 'Disable usage of SSL; i.e. assume plain HTTP')
   .parse(process.argv);
 
@@ -28,6 +29,13 @@ function checkCommandLineArguments() {
      || (typeof options.password === 'undefined')) {
     program.outputHelp();
     throw new Error('Missing command-line argument(s).');
+  }
+
+  if (  (typeof options.timeout !== 'undefined')
+     && (  !isFinite(Number(options.timeout))
+        || (Number(options.timeout) <= 0))) {
+    program.outputHelp({error: true});
+    throw new Error('Command-line argument \'timeout\' must be a positive number of milliseconds.');
   }
 }
 
@@ -43,11 +51,12 @@ try {
   checkCommandLineArguments();
 
   const socketAddress = { ip: options.ip, port: Number(options.port) };
+  const timeout = (typeof options.timeout !== 'undefined') ? Number(options.timeout) : undefined;
 
-  let authentication = Authentication(socketAddress, options.ssl);
+  let authentication = Authentication(socketAddress, options.ssl, timeout);
 
   authentication.signIn({ username: options.username, password: options.password }).then(() => {
-      let system = ViSenseSystem(socketAddress, options.ssl, authentication.getSessionToken());
+      let system = ViSenseSystem(socketAddress, options.ssl, authentication.getSessionToken(), undefined, timeout);
 
       return Promise.all([ system.getProductName(),
                            system.getServiceTag(),

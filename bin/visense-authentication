@@ -4,7 +4,7 @@
 
 const version = require('../package.json').version;
 
-const program        = require('commander'),
+const program        = require('commander').program,
       Authentication = require('../lib/authentication.js');
 
 
@@ -17,6 +17,7 @@ program
   .option('--username <username>', 'Username (mandatory for command SignIn)')
   .option('--password <password>', 'Password (mandatory for command SignIn)')
   .option('--sessionToken <sessionToken>', 'Session token (mandatory for command SignOut)')
+  .option('--timeout <ms>', 'HTTP request timeout in milliseconds (default: 500)')
   .option('--no-ssl', 'Disable usage of SSL; i.e. assume plain HTTP')
   .parse(process.argv);
 
@@ -41,6 +42,13 @@ function checkCommandLineArguments() {
     program.outputHelp({error: true});
     throw new Error('Command-line argument \'sessionToken\' mandatory for command SignOut.');
   }
+
+  if (  (typeof options.timeout !== 'undefined')
+     && (  !isFinite(Number(options.timeout))
+        || (Number(options.timeout) <= 0))) {
+    program.outputHelp({error: true});
+    throw new Error('Command-line argument \'timeout\' must be a positive number of milliseconds.');
+  }
 }
 
 
@@ -54,7 +62,9 @@ function handleError(error) {
 try {
   checkCommandLineArguments();
 
-  let authentication = Authentication({ ip: options.ip, port: Number(options.port) }, options.ssl);
+  const timeout = (typeof options.timeout !== 'undefined') ? Number(options.timeout) : undefined;
+
+  let authentication = Authentication({ ip: options.ip, port: Number(options.port) }, options.ssl, timeout);
 
   // Process authentication command
   switch (options.command) {
